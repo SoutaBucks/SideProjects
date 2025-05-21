@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WeatherSite_by_Kim_SeongYun</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <link rel="stylesheet" href="weatherCss.css"/>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=598ec61976424861f3af66b567dae9bc&libraries=services"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
+
+<div id="search">
+  <label><input type="text" id="location" placeholder="부산"/></label>
+  <button id="search_btn">검색</button>
+</div>
+<hr/>
+<div class="container">
+  <div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div class="hAddr">
+      <span class="title">지도중심기준 행정동 주소정보</span>
+      <span id="centerAddr"></span>
+    </div>
+  </div>
+</div>
+<div class="container" id="weatherInfo">
+</div>
+<script src="weatherJavaScript.js"></script>
+
+</body>
+</html>
