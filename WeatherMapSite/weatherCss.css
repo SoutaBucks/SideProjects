@@ -142,9 +142,10 @@
     opacity: 0.8;
 }
 
-.weather-humidity {
+.weather-precipitation {
     font-size: 12px;
-    opacity: 0.8;
+    opacity: 0.9;
+    font-weight: 500;
 }
 
 .weather-error {

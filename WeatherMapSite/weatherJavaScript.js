@@ -279,9 +279,9 @@ function parseWeatherData(apiData) {
                     ptyValues.push(parseInt(timeData.PTY));
                 }
                 
-                // 습도 데이터 수집
-                if (timeData.REH) {
-                    rehValues.push(parseInt(timeData.REH));
+                // 강수확률 데이터 수집
+                if (timeData.POP) {
+                    rehValues.push(parseInt(timeData.POP));
                 }
             });
             
@@ -301,9 +301,9 @@ function parseWeatherData(apiData) {
                 weather = '구름많음';
             }
             
-            // 평균 습도 계산
-            const avgHumidity = rehValues.length > 0 ? 
-                Math.round(rehValues.reduce((a, b) => a + b) / rehValues.length) : 50;
+            // 최대 강수확률 계산
+            const maxPrecipitation = rehValues.length > 0 ? 
+                Math.max(...rehValues) : 0;
             
             weatherData.push({
                 date: date.toLocaleDateString('ko-KR', { 
@@ -316,7 +316,7 @@ function parseWeatherData(apiData) {
                     min: tempMin === 50 ? 10 : tempMin, // 기본값 설정
                     max: tempMax === -50 ? 20 : tempMax  // 기본값 설정
                 },
-                humidity: avgHumidity
+                precipitation: maxPrecipitation
             });
         } else {
             // 해당 날짜의 데이터가 없는 경우 null 반환하여 오류 처리
@@ -329,14 +329,23 @@ function parseWeatherData(apiData) {
 
 
 
+// 강수확률에 따른 배경색 계산 함수
+function getPrecipitationBackground(precipitation) {
+    // 강수확률 0% -> 투명, 100% -> 빨강
+    const opacity = precipitation / 100;
+    return `rgba(255, 0, 0, ${opacity * 0.6})`; // 최대 0.6 투명도로 제한
+}
+
 // 날씨 데이터를 화면에 표시하는 함수
 function displayWeatherData(weatherData) {
     const weatherContainer = document.querySelector('.weather-container');
     
     if (!weatherContainer) return;
     
-    const weatherHTML = weatherData.map(day => `
-        <div class="weather-card">
+    const weatherHTML = weatherData.map(day => {
+        const bgOverlay = getPrecipitationBackground(day.precipitation);
+        return `
+        <div class="weather-card" style="background: linear-gradient(135deg, ${bgOverlay}, ${bgOverlay}), linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
             <div class="weather-date">${day.date}</div>
             <div class="weather-icon">${getWeatherIcon(day.weather)}</div>
             <div class="weather-type">${day.weather}</div>
@@ -344,9 +353,9 @@ function displayWeatherData(weatherData) {
                 <span class="temp-max">${day.temp.max}°</span>
                 <span class="temp-min">${day.temp.min}°</span>
             </div>
-            <div class="weather-humidity">습도 ${day.humidity}%</div>
+            <div class="weather-precipitation">강수확률 ${day.precipitation}%</div>
         </div>
-    `).join('');
+    `}).join('');
     
     weatherContainer.innerHTML = weatherHTML;
 }
